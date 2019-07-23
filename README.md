@@ -4,7 +4,7 @@ bpolat/Music-Player, updates to Swift 5
 
 
 
-<img src="https://github.com/coyingcat/mPlayer/blob/master/info/one.png">
+<img src="https://github.com/coyingcat/mPlayer/blob/master/one.png">
 
 
 
