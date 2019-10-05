@@ -32,6 +32,9 @@
 		2647DF77234932BE003DE889 /* shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2647DF61234932BE003DE889 /* shadow.png */; };
 		2647DF78234932BE003DE889 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 2647DF62234932BE003DE889 /* play.png */; };
 		2647DF79234932BE003DE889 /* previous.png in Resources */ = {isa = PBXBuildFile; fileRef = 2647DF63234932BE003DE889 /* previous.png */; };
+		2647DF7E23493489003DE889 /* Beat It.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2647DF7B23493489003DE889 /* Beat It.mp3 */; };
+		2647DF7F23493489003DE889 /* Billie Jean.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2647DF7C23493489003DE889 /* Billie Jean.mp3 */; };
+		2647DF8023493489003DE889 /* Baby Be Mine.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2647DF7D23493489003DE889 /* Baby Be Mine.mp3 */; };
 		D33843861C1F7A7300348BE9 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D33843851C1F7A7300348BE9 /* Launch Screen.storyboard */; };
 		D36191BE19E9647B00CC9026 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D36191BB19E9647B00CC9026 /* Main.storyboard */; };
 		D3D2E95319A36A0000DEF125 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D2E95219A36A0000DEF125 /* AppDelegate.swift */; };
@@ -76,6 +79,9 @@
 		2647DF61234932BE003DE889 /* shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shadow.png; sourceTree = "<group>"; };
 		2647DF62234932BE003DE889 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		2647DF63234932BE003DE889 /* previous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = previous.png; sourceTree = "<group>"; };
+		2647DF7B23493489003DE889 /* Beat It.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Beat It.mp3"; sourceTree = "<group>"; };
+		2647DF7C23493489003DE889 /* Billie Jean.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Billie Jean.mp3"; sourceTree = "<group>"; };
+		2647DF7D23493489003DE889 /* Baby Be Mine.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Baby Be Mine.mp3"; sourceTree = "<group>"; };
 		D33843851C1F7A7300348BE9 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		D36191BC19E9647B00CC9026 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D3D2E94D19A36A0000DEF125 /* Music Player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Music Player.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -158,6 +164,17 @@
 			path = icon;
 			sourceTree = "<group>";
 		};
+		2647DF7A23493489003DE889 /* mp3 */ = {
+			isa = PBXGroup;
+			children = (
+				2647DF7B23493489003DE889 /* Beat It.mp3 */,
+				2647DF7C23493489003DE889 /* Billie Jean.mp3 */,
+				2647DF7D23493489003DE889 /* Baby Be Mine.mp3 */,
+			);
+			name = mp3;
+			path = ../../mp3;
+			sourceTree = "<group>";
+		};
 		D3D2E94419A36A0000DEF125 = {
 			isa = PBXGroup;
 			children = (
@@ -179,6 +196,7 @@
 		D3D2E94F19A36A0000DEF125 /* Music Player */ = {
 			isa = PBXGroup;
 			children = (
+				2647DF7A23493489003DE889 /* mp3 */,
 				2647DF4B234932BE003DE889 /* imgs */,
 				2647DF4A234932BE003DE889 /* list.plist */,
 				D3D2E95219A36A0000DEF125 /* AppDelegate.swift */,
@@ -310,6 +328,7 @@
 				2647DF71234932BE003DE889 /* background7.png in Resources */,
 				2647DF73234932BE003DE889 /* background2.png in Resources */,
 				2647DF6A234932BE003DE889 /* pause.png in Resources */,
+				2647DF7E23493489003DE889 /* Beat It.mp3 in Resources */,
 				2647DF67234932BE003DE889 /* repeat.png in Resources */,
 				2647DF79234932BE003DE889 /* previous.png in Resources */,
 				D33843861C1F7A7300348BE9 /* Launch Screen.storyboard in Resources */,
@@ -321,11 +340,13 @@
 				2647DF72234932BE003DE889 /* background6.png in Resources */,
 				2647DF6B234932BE003DE889 /* listS.png in Resources */,
 				2647DF76234932BE003DE889 /* next.png in Resources */,
+				2647DF7F23493489003DE889 /* Billie Jean.mp3 in Resources */,
 				2647DF69234932BE003DE889 /* shuffle.png in Resources */,
 				2647DF78234932BE003DE889 /* play.png in Resources */,
 				2647DF6F234932BE003DE889 /* background4.png in Resources */,
 				2647DF6D234932BE003DE889 /* demo3.jpg in Resources */,
 				D3D2E95A19A36A0000DEF125 /* Images.xcassets in Resources */,
+				2647DF8023493489003DE889 /* Baby Be Mine.mp3 in Resources */,
 				2647DF6C234932BE003DE889 /* demo1.png in Resources */,
 				2647DF75234932BE003DE889 /* background1.png in Resources */,
 				2647DF68234932BE003DE889 /* list.png in Resources */,
