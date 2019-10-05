@@ -134,14 +134,14 @@
 			name = "ALBUM DATA";
 			sourceTree = "<group>";
 		};
-		D36191C319E96E1400CC9026 /* Settings */ = {
+		D36191C319E96E1400CC9026 /* src */ = {
 			isa = PBXGroup;
 			children = (
 				D3C174A719A36BEA00C3F4E4 /* music */,
 				D3485DF319E7362C009A81CD /* Album Artwork */,
 				D36191C219E96DB500CC9026 /* ALBUM DATA */,
 			);
-			name = Settings;
+			name = src;
 			sourceTree = "<group>";
 		};
 		D3C1748419A36B3700C3F4E4 /* Asset */ = {
@@ -210,7 +210,7 @@
 				D33843851C1F7A7300348BE9 /* Launch Screen.storyboard */,
 				D36191BB19E9647B00CC9026 /* Main.storyboard */,
 				D3D2E95419A36A0000DEF125 /* PlayerViewController.swift */,
-				D36191C319E96E1400CC9026 /* Settings */,
+				D36191C319E96E1400CC9026 /* src */,
 				D3D2E95019A36A0000DEF125 /* Supporting Files */,
 				2612FC1122E734C500B0B074 /* Util.swift */,
 			);

@@ -2,12 +2,8 @@
 
 import UIKit
 import AVFoundation
+
 import MediaPlayer
-
-
-
-
-
 
 class PlayerViewController: UIViewController{
     
@@ -39,9 +35,6 @@ class PlayerViewController: UIViewController{
     var repeatState = false
     var shuffleArray = [Int]()
     
-    
-    
-    
     @IBOutlet weak var backgroundImageView: UIImageView!
     
     @IBOutlet var lineView : UIView!
@@ -69,15 +62,12 @@ class PlayerViewController: UIViewController{
     
     @IBOutlet var tableView : UITableView!
     
-    
-    
-    
+
     @IBOutlet var tableViewContainer : UIView!
     
     @IBOutlet weak var shuffleButton: UIButton!
     @IBOutlet weak var repeatButton: UIButton!
     @IBOutlet weak var blurView: UIVisualEffectView!
-    
     
     @IBOutlet weak var tableViewContainerTopConstrain: NSLayoutConstraint!
     
