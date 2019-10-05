@@ -28,3 +28,7 @@ bpolat/Music-Player, updates to Swift 5
 <hr>
 
 
+<img src="imgs/shots/1.png">
+<img src="imgs/shots/2.png">
+<img src="imgs/shots/3.png">
+<img src="imgs/shots/4.png">
