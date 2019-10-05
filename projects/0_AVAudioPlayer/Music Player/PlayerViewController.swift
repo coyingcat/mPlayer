@@ -253,6 +253,9 @@ class PlayerViewController: UIViewController{
     
     //MARK:- Player Controls Methods
     func  playAudio(){
+        guard audioPlayer != nil else {
+            return
+        }
         audioPlayer.play()
         startTimer()
         updateLabels()
@@ -355,6 +358,9 @@ class PlayerViewController: UIViewController{
     
     
     func retrievePlayerProgressSliderValue(){
+        guard audioPlayer != nil else {
+            return
+        }
         let playerProgressSliderValue =  UserDefaults.standard.float(forKey: AudioTags.playerProgress.rawValue)
         if playerProgressSliderValue == 0 {
             playerProgressSlider.value = 0.0
