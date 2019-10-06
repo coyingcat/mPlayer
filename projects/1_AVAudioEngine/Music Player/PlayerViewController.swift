@@ -254,23 +254,14 @@ class PlayerViewController: UIViewController{
     //MARK:- Player Controls Methods
     func  playAudio(){
         
-        let audioFormat = engineAudioFile.processingFormat
-        let audioFrameCount = UInt32(engineAudioFile.length)
-        if let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: audioFormat, frameCapacity: audioFrameCount){
-            do{
-                try engineAudioFile.read(into: audioFileBuffer)
-                enginePlayer.scheduleBuffer(audioFileBuffer, at: nil, options: AVAudioPlayerNodeBufferOptions.loops, completionHandler: nil)
-                enginePlayer.play()
-                startTimer()
-                updateLabels()
-                saveCurrentTrackNumber()
-                showMediaInfo()
-            }
-            catch{}
+        enginePlayer.scheduleFile(engineAudioFile, at: nil) {
+            
         }
-        
-        
-        
+        enginePlayer.play()
+        startTimer()
+        updateLabels()
+        saveCurrentTrackNumber()
+        showMediaInfo()
     }
     
     
