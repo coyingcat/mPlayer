@@ -5,7 +5,7 @@
 ## Build generated
 build/
 DerivedData/
-
+projects/mp3/
 ## Various settings
 *.pbxuser
 !default.pbxuser
