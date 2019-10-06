@@ -33,7 +33,7 @@ class PlayerViewController: UIViewController{
     
     var shuffleState = false
     var repeatState = false
-    var shuffleArray = [Int]()
+    var shuffleCluster = Set<Int>()
     
     @IBOutlet weak var backgroundImageView: UIImageView!
     
@@ -521,7 +521,7 @@ class PlayerViewController: UIViewController{
             return
         }
         if shuffleState == true {
-            shuffleArray.removeAll()
+            shuffleCluster.removeAll()
         }
         let play = UIImage(named: "play")
         let pause = UIImage(named: "pause")
@@ -594,7 +594,7 @@ class PlayerViewController: UIViewController{
     
     
     @IBAction func shuffleButtonTapped(_ sender: UIButton) {
-        shuffleArray.removeAll()
+        shuffleCluster.removeAll()
         sender.isSelected.toggle()
         shuffleState = sender.isSelected
         UserSettings.shared.isInShuffle = sender.isSelected
@@ -788,43 +788,26 @@ extension PlayerViewController: AVAudioPlayerDelegate{
             case (true, false):
                 //shuffle songs but do not repeat at the end
                 //Shuffle Logic : Create an array and put current song into the array then when next song come randomly choose song from available song and check against the array it is in the array try until you find one if the array and number of songs are same then stop playing as all songs are already played.
-                shuffleArray.append(currentAudioIndex)
-                if shuffleArray.count >= audioList.count {
+                shuffleCluster.insert(currentAudioIndex)
+                if shuffleCluster.count >= audioList.count {
                     playButton.setImage( UIImage(named: "play"), for: UIControl.State())
+                    // 播放一遍完了
                     return
-                    
                 }
-                
-                var randomIndex = 0
-                var newIndex = false
-                while newIndex == false {
-                    randomIndex =  Int(arc4random_uniform(UInt32(audioList.count)))
-                    if shuffleArray.contains(randomIndex) {
-                        newIndex = false
-                    }else{
-                        newIndex = true
-                    }
-                }
-                currentAudioIndex = randomIndex
+                let available = Set<Int>(0...(audioList.count-1))
+                let rest = available.subtracting(shuffleCluster)
+                currentAudioIndex = Int(arc4random_uniform(UInt32(rest.count)))
                 prepareAudio()
                 playAudio()
             case (true, true):
                 //shuffle song endlessly
-                shuffleArray.append(currentAudioIndex)
-                if shuffleArray.count >= audioList.count {
-                    shuffleArray.removeAll()
+                shuffleCluster.insert(currentAudioIndex)
+                if shuffleCluster.count >= audioList.count {
+                    shuffleCluster.removeAll()
                 }
-                var randomIndex = 0
-                var newIndex = false
-                while newIndex == false {
-                    randomIndex =  Int(arc4random_uniform(UInt32(audioList.count)))
-                    if shuffleArray.contains(randomIndex) {
-                        newIndex = false
-                    }else{
-                        newIndex = true
-                    }
-                }
-                currentAudioIndex = randomIndex
+                let available = Set<Int>(0...(audioList.count-1))
+                let rest = available.subtracting(shuffleCluster)
+                currentAudioIndex = Int(arc4random_uniform(UInt32(rest.count)))
                 prepareAudio()
                 playAudio()
                 
