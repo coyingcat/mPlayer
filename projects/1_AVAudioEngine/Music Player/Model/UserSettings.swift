@@ -62,3 +62,13 @@ struct UserSettings {
     
     
 }
+
+
+
+
+enum PlayRules:String{
+    case shuffleLoops = "无限乱序循环"
+    case shuffleNoLoop = "乱序来一遍"
+    case loopNoShuffle = "单曲循环"
+    case none = "顺序来一遍"
+}

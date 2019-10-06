@@ -72,6 +72,10 @@ class PlayerViewController: UIViewController{
     @IBOutlet weak var tableViewContainerTopConstrain: NSLayoutConstraint!
     
     
+    @IBOutlet weak var stateTip: UILabel!
+    
+    
+    
     //MARK:- Lockscreen Media Control
     
     // This shows media info on lock screen - used currently and perform controls
@@ -118,11 +122,11 @@ class PlayerViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //assing background
+        showState(UserSettings.shared.isInShuffle, UserSettings.shared.isInRepeat)
+        //   background
         backgroundImageView.image = UIImage(named: "background\(selectedBackground)")
         
-        //this sets last listened trach number as current
+        // this sets last listened trach number as current
         retrieveSavedTrackNumber()
         prepareAudio()
         updateLabels()
@@ -594,6 +598,7 @@ class PlayerViewController: UIViewController{
         sender.isSelected.toggle()
         shuffleState = sender.isSelected
         UserSettings.shared.isInShuffle = sender.isSelected
+        showState(sender.isSelected, repeatButton.isSelected)
     }
     
     
@@ -601,7 +606,25 @@ class PlayerViewController: UIViewController{
         sender.isSelected.toggle()
         repeatState = sender.isSelected
         UserSettings.shared.isInRepeat = sender.isSelected
+        showState(shuffleButton.isSelected, sender.isSelected)
     }
+    
+    
+    
+    func showState(_ isInShuffle: Bool, _ isInLoops: Bool){
+        switch (isInShuffle, isInLoops) {
+        case (true, true):
+            stateTip.text = PlayRules.shuffleLoops.rawValue
+        case (true, false):
+            stateTip.text = PlayRules.shuffleNoLoop.rawValue
+        case (false, true):
+            stateTip.text = PlayRules.loopNoShuffle.rawValue
+        case (false, false):
+            stateTip.text = PlayRules.none.rawValue
+        }
+    }
+    
+    
     
     @IBAction func presentListTableView(_ sender : AnyObject) {
         if effectToggle{
@@ -753,17 +776,16 @@ extension PlayerViewController: AVAudioPlayerDelegate{
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool){
         if flag == true {
             
-            if shuffleState == false && repeatState == false {
+            switch (shuffleState, repeatState){
+            case (false, false):
                 // do nothing
                 playButton.setImage( UIImage(named: "play"), for: UIControl.State())
                 return
-                
-            } else if shuffleState == false && repeatState == true {
+            case (false, true):
                 //repeat same song
                 prepareAudio()
                 playAudio()
-                
-            } else if shuffleState == true && repeatState == false {
+            case (true, false):
                 //shuffle songs but do not repeat at the end
                 //Shuffle Logic : Create an array and put current song into the array then when next song come randomly choose song from available song and check against the array it is in the array try until you find one if the array and number of songs are same then stop playing as all songs are already played.
                 shuffleArray.append(currentAudioIndex)
@@ -773,7 +795,6 @@ extension PlayerViewController: AVAudioPlayerDelegate{
                     
                 }
                 
-                
                 var randomIndex = 0
                 var newIndex = false
                 while newIndex == false {
@@ -787,15 +808,12 @@ extension PlayerViewController: AVAudioPlayerDelegate{
                 currentAudioIndex = randomIndex
                 prepareAudio()
                 playAudio()
-                
-            } else if shuffleState == true && repeatState == true {
+            case (true, true):
                 //shuffle song endlessly
                 shuffleArray.append(currentAudioIndex)
                 if shuffleArray.count >= audioList.count {
                     shuffleArray.removeAll()
                 }
-                
-                
                 var randomIndex = 0
                 var newIndex = false
                 while newIndex == false {
@@ -810,13 +828,9 @@ extension PlayerViewController: AVAudioPlayerDelegate{
                 prepareAudio()
                 playAudio()
                 
-                
             }
             
         }
     }
-
-
-
 
 }
