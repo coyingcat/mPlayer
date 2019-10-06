@@ -274,19 +274,12 @@ class PlayerViewController: UIViewController{
         currentAudioIndex += 1
         if currentAudioIndex>audioList.count-1{
             currentAudioIndex -= 1
-            
             return
         }
-        
-     
-        
+        prepareAudio()
         if audioPlayer.isPlaying{
-            prepareAudio()
             playAudio()
-        }else{
-            prepareAudio()
         }
-        
     }
     
     
@@ -605,37 +598,17 @@ class PlayerViewController: UIViewController{
     
     @IBAction func shuffleButtonTapped(_ sender: UIButton) {
         shuffleArray.removeAll()
-        if sender.isSelected{
-            sender.isSelected = false
-            shuffleState = false
-            UserDefaults.standard.set(false, forKey: "shuffleState")
-        } else {
-            sender.isSelected = true
-            shuffleState = true
-            UserDefaults.standard.set(true, forKey: "shuffleState")
-        }
-        
-        
-        
+        sender.isSelected.toggle()
+        shuffleState = sender.isSelected
+        UserSettings.shared.isInShuffle = sender.isSelected
     }
     
     
     @IBAction func repeatButtonTapped(_ sender: UIButton) {
-        if sender.isSelected == true {
-            sender.isSelected = false
-            repeatState = false
-            UserDefaults.standard.set(false, forKey: "repeatState")
-        } else {
-            sender.isSelected = true
-            repeatState = true
-            UserDefaults.standard.set(true, forKey: "repeatState")
-        }
-
-        
+        sender.isSelected.toggle()
+        repeatState = sender.isSelected
+        UserSettings.shared.isInRepeat = sender.isSelected
     }
-    
-    
-    
     
     @IBAction func presentListTableView(_ sender : AnyObject) {
         if effectToggle{

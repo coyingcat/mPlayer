@@ -35,6 +35,7 @@
 		2647DF7E23493489003DE889 /* Beat It.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2647DF7B23493489003DE889 /* Beat It.mp3 */; };
 		2647DF7F23493489003DE889 /* Billie Jean.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2647DF7C23493489003DE889 /* Billie Jean.mp3 */; };
 		2647DF8023493489003DE889 /* Baby Be Mine.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2647DF7D23493489003DE889 /* Baby Be Mine.mp3 */; };
+		269E99722349CF5400FC044C /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269E99712349CF5400FC044C /* UserSettings.swift */; };
 		D33843861C1F7A7300348BE9 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D33843851C1F7A7300348BE9 /* Launch Screen.storyboard */; };
 		D36191BE19E9647B00CC9026 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D36191BB19E9647B00CC9026 /* Main.storyboard */; };
 		D3D2E95319A36A0000DEF125 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D2E95219A36A0000DEF125 /* AppDelegate.swift */; };
@@ -82,6 +83,7 @@
 		2647DF7B23493489003DE889 /* Beat It.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Beat It.mp3"; sourceTree = "<group>"; };
 		2647DF7C23493489003DE889 /* Billie Jean.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Billie Jean.mp3"; sourceTree = "<group>"; };
 		2647DF7D23493489003DE889 /* Baby Be Mine.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Baby Be Mine.mp3"; sourceTree = "<group>"; };
+		269E99712349CF5400FC044C /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		D33843851C1F7A7300348BE9 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		D36191BC19E9647B00CC9026 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D3D2E94D19A36A0000DEF125 /* Music Player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Music Player.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,6 +177,14 @@
 			path = ../../mp3;
 			sourceTree = "<group>";
 		};
+		269E99702349CF4300FC044C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				269E99712349CF5400FC044C /* UserSettings.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		D3D2E94419A36A0000DEF125 = {
 			isa = PBXGroup;
 			children = (
@@ -196,6 +206,7 @@
 		D3D2E94F19A36A0000DEF125 /* Music Player */ = {
 			isa = PBXGroup;
 			children = (
+				269E99702349CF4300FC044C /* Model */,
 				2647DF7A23493489003DE889 /* mp3 */,
 				2647DF4B234932BE003DE889 /* imgs */,
 				2647DF4A234932BE003DE889 /* list.plist */,
@@ -368,6 +379,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2612FC1622E7396700B0B074 /* Extern.swift in Sources */,
+				269E99722349CF5400FC044C /* UserSettings.swift in Sources */,
 				D3D2E95519A36A0000DEF125 /* PlayerViewController.swift in Sources */,
 				2612FC1422E7375700B0B074 /* Const.swift in Sources */,
 				2612FC1222E734C500B0B074 /* Util.swift in Sources */,
