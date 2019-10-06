@@ -127,7 +127,15 @@ class PlayerViewController: UIViewController{
         showState(UserSettings.shared.isInShuffle, UserSettings.shared.isInRepeat)
         //   background
         backgroundImageView.image = UIImage(named: "background\(selectedBackground)")
+        let format = audioEngine.inputNode.inputFormat(forBus: 0)
+        audioEngine.attach(enginePlayer)
+        audioEngine.connect(enginePlayer, to: audioEngine.outputNode, format: format)
         
+        do {
+            try audioEngine.start()
+        } catch {
+            print("audioEngine 启动失败")
+        }
         // this sets last listened trach number as current
         retrieveSavedTrackNumber()
         prepareAudio()
@@ -141,8 +149,6 @@ class PlayerViewController: UIViewController{
             UIApplication.shared.beginBackgroundTask(expirationHandler: { () -> Void in
             })
         }
-
-
     }
 
     
@@ -223,14 +229,19 @@ class PlayerViewController: UIViewController{
             alertSongExsit()
             return
         }
-        engineAudioFile = try? AVAudioFile(forReading: currentAudioPath)
+        do {
+            engineAudioFile = try AVAudioFile(forReading: currentAudioPath)
+        } catch  {
+            print("AVAudioFile gg")
+        }
+       
         audioLength = engineAudioFile.duration
         
         playerProgressSlider.maximumValue = Float(audioLength)
         playerProgressSlider.minimumValue = 0.0
         playerProgressSlider.value = 0.0
         
-        audioPlayer.prepareToPlay()
+        
         showTotalSongLength()
         updateLabels()
         progressTimerLabel.text = "00:00"
@@ -240,19 +251,27 @@ class PlayerViewController: UIViewController{
     
     
     
-    
-    
     //MARK:- Player Controls Methods
     func  playAudio(){
         
-        audioPlayer.play()
-        startTimer()
-        updateLabels()
-        saveCurrentTrackNumber()
-        showMediaInfo()
+        let audioFormat = engineAudioFile.processingFormat
+        let audioFrameCount = UInt32(engineAudioFile.length)
+        if let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: audioFormat, frameCapacity: audioFrameCount){
+            do{
+                try engineAudioFile.read(into: audioFileBuffer)
+                enginePlayer.scheduleBuffer(audioFileBuffer, at: nil, options: AVAudioPlayerNodeBufferOptions.loops, completionHandler: nil)
+                enginePlayer.play()
+                startTimer()
+                updateLabels()
+                saveCurrentTrackNumber()
+                showMediaInfo()
+            }
+            catch{}
+        }
+        
+        
+        
     }
-    
-    
     
     
     func playNextAudio(){
@@ -267,9 +286,6 @@ class PlayerViewController: UIViewController{
             playAudio()
         }
     }
-    
-    
-    
     
     
     func playPreviousAudio(){
@@ -290,7 +306,7 @@ class PlayerViewController: UIViewController{
     
     
     func stopAudiplayer(){
-        audioPlayer.stop();
+        enginePlayer.stop()
         
     }
     
@@ -335,13 +351,10 @@ class PlayerViewController: UIViewController{
         let playerProgressSliderValue = UserSettings.shared.playerProgress
         if playerProgressSliderValue == 0 {
             playerProgressSlider.value = 0.0
-            audioPlayer.currentTime = 0.0
+            enginePlayer.play(at: nil)
             progressTimerLabel.text = "00:00:00"
         }else{
-            
-            playerProgressSlider.value  = playerProgressSliderValue
-            audioPlayer.currentTime = TimeInterval(playerProgressSliderValue)
-            
+            enginePlayer.current = TimeInterval(playerProgressSliderValue)
             let time = calculateTimeFrom(enginePlayer.current)
             progressTimerLabel.text  = "\(time.minute):\(time.second)"
             playerProgressSlider.value = Float(enginePlayer.current)
@@ -534,12 +547,9 @@ class PlayerViewController: UIViewController{
     
     @IBAction func changeAudioLocationSlider(_ sender : UISlider) {
         enginePlayer.pause()
-        audioPlayer.currentTime = TimeInterval(sender.value)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.audioPlayer.play()
+            self.enginePlayer.current = TimeInterval(sender.value)
         }
-       
-        
     }
     
     
@@ -806,9 +816,19 @@ extension AVAudioFile{
 extension AVAudioPlayerNode{
     
     var current: TimeInterval{
-        if let nodeTime = lastRenderTime,let playerTime = playerTime(forNodeTime: nodeTime) {
-            return Double(playerTime.sampleTime) / playerTime.sampleRate
+        get{
+            if let nodeTime = lastRenderTime,let playerTime = playerTime(forNodeTime: nodeTime) {
+                return Double(playerTime.sampleTime) / playerTime.sampleRate
+            }
+            return 0
         }
-        return 0
+        set(newVal){
+            guard let sampleRate = lastRenderTime?.sampleRate else{
+                return
+            }
+            let currentTime = TimeInterval(newVal)
+            let setTime = AVAudioTime(sampleTime: Int64(sampleRate * currentTime), atRate: sampleRate)
+            play(at: setTime)
+        }
     }
 }
