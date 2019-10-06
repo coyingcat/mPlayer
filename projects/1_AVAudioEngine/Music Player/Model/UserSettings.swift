@@ -39,5 +39,26 @@ struct UserSettings {
     }
     
     
+    var playerProgress: Float{
+        get{
+            return UserDefaults.standard.float(forKey: AudioTags.playerProgress.rawValue)
+        }
+        set(newVal){
+            UserDefaults.standard.set(newVal , forKey: AudioTags.playerProgress.rawValue)
+        }
+    }
+    
+    
+    var currentAudioIndex: Int{
+        get{
+            return UserDefaults.standard.intVal(forKey: AudioTags.currentIndex.rawValue)
+        }
+        set(newVal){
+            UserDefaults.standard.set(newVal, forKey: AudioTags.currentIndex.rawValue)
+        }
+    }
+    
+
+    
     
 }

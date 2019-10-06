@@ -141,8 +141,8 @@ class PlayerViewController: UIViewController{
 
     
     func setRepeatAndShuffle(){
-        shuffleState = UserDefaults.standard.bool(forKey: "shuffleState")
-        repeatState = UserDefaults.standard.bool(forKey: "repeatState")
+        shuffleState = UserSettings.shared.isInShuffle
+        repeatState = UserSettings.shared.isInRepeat
         if shuffleState == true {
             shuffleButton.isSelected = true
         } else {
@@ -188,9 +188,7 @@ class PlayerViewController: UIViewController{
     
     
     func saveCurrentTrackNumber(){
-        UserDefaults.standard.set(currentAudioIndex, forKey: AudioTags.currentIndex.rawValue)
-   
-        
+        UserSettings.shared.currentAudioIndex = currentAudioIndex
     }
     
     
@@ -205,8 +203,7 @@ class PlayerViewController: UIViewController{
     
     
     func retrieveSavedTrackNumber(){
-        
-        currentAudioIndex = UserDefaults.standard.intVal(forKey: AudioTags.currentIndex.rawValue)
+        currentAudioIndex = UserSettings.shared.currentAudioIndex
     }
 
 
@@ -341,8 +338,7 @@ class PlayerViewController: UIViewController{
         let time = calculateTimeFromNSTimeInterval(audioPlayer.currentTime)
         progressTimerLabel.text  = "\(time.minute):\(time.second)"
         playerProgressSlider.value = CFloat(audioPlayer.currentTime)
-        UserDefaults.standard.set(playerProgressSlider.value , forKey: AudioTags.playerProgress.rawValue)
-
+        UserSettings.shared.playerProgress = playerProgressSlider.value
         
     }
     
@@ -354,20 +350,17 @@ class PlayerViewController: UIViewController{
         guard audioPlayer != nil else {
             return
         }
-        let playerProgressSliderValue =  UserDefaults.standard.float(forKey: AudioTags.playerProgress.rawValue)
+        let playerProgressSliderValue = UserSettings.shared.playerProgress
         if playerProgressSliderValue == 0 {
             playerProgressSlider.value = 0.0
             audioPlayer.currentTime = 0.0
             progressTimerLabel.text = "00:00:00"
-            
-            
         }else{
             guard audioPlayer != nil else{
                 alertSongExsit()
                 return
             }
             playerProgressSlider.value  = playerProgressSliderValue
-            
             audioPlayer.currentTime = TimeInterval(playerProgressSliderValue)
             
             let time = calculateTimeFromNSTimeInterval(audioPlayer.currentTime)
@@ -614,10 +607,10 @@ class PlayerViewController: UIViewController{
         if effectToggle{
             isTableViewOnscreen = true
             setNeedsStatusBarAppearanceUpdate()
-            self.animateTableViewToScreen()
+            animateTableViewToScreen()
             
         }else{
-            self.animateTableViewToOffScreen()
+            animateTableViewToOffScreen()
             
         }
         effectToggle = !effectToggle
@@ -631,12 +624,7 @@ class PlayerViewController: UIViewController{
         }
         
     }
-    
-    
-    
-    
-    
-    
+
 }
 
 
