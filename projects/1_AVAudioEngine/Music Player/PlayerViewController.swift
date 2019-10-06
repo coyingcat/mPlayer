@@ -10,8 +10,10 @@ class PlayerViewController: UIViewController{
     //Choose background here. Between 1 - 7
     let selectedBackground = 1
     
+    let audioEngine = AVAudioEngine()
+    let enginePlayer = AVAudioPlayerNode()
+    var engineAudioFile: AVAudioFile!
     
-    var audioPlayer:AVAudioPlayer! = nil
     var currentAudio = ""
     var currentAudioPath:URL!
     
@@ -215,30 +217,18 @@ class PlayerViewController: UIViewController{
     // Prepare audio for playing
     func prepareAudio(){
         setCurrentAudioPath()
-
-        do {
-            //keep alive audio at background
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
-        } catch _ { }
-        
-        do {
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch _ { }
-        
         
         UIApplication.shared.beginReceivingRemoteControlEvents()
         guard currentAudioPath != nil else {
             alertSongExsit()
             return
         }
-        audioPlayer = try? AVAudioPlayer(contentsOf: currentAudioPath)
-        audioPlayer.delegate = self
+        engineAudioFile = try? AVAudioFile(forReading: currentAudioPath)
+        audioLength = engineAudioFile.duration
         
-        audioLength = audioPlayer.duration
-        playerProgressSlider.maximumValue = CFloat(audioPlayer.duration)
+        playerProgressSlider.maximumValue = Float(audioLength)
         playerProgressSlider.minimumValue = 0.0
         playerProgressSlider.value = 0.0
-        
         
         audioPlayer.prepareToPlay()
         showTotalSongLength()
@@ -254,9 +244,7 @@ class PlayerViewController: UIViewController{
     
     //MARK:- Player Controls Methods
     func  playAudio(){
-        guard audioPlayer != nil else {
-            return
-        }
+        
         audioPlayer.play()
         startTimer()
         updateLabels()
@@ -268,17 +256,14 @@ class PlayerViewController: UIViewController{
     
     
     func playNextAudio(){
-        guard audioPlayer != nil else{
-            alertSongExsit()
-            return
-        }
+        
         currentAudioIndex += 1
         if currentAudioIndex>audioList.count-1{
             currentAudioIndex -= 1
             return
         }
         prepareAudio()
-        if audioPlayer.isPlaying{
+        if enginePlayer.isPlaying{
             playAudio()
         }
     }
@@ -288,18 +273,13 @@ class PlayerViewController: UIViewController{
     
     
     func playPreviousAudio(){
-        guard audioPlayer != nil else{
-            alertSongExsit()
-            return
-        }
+        
         currentAudioIndex -= 1
         if currentAudioIndex<0{
             currentAudioIndex += 1
             return
         }
-        
-        
-        if audioPlayer.isPlaying{
+        if enginePlayer.isPlaying{
             prepareAudio()
             playAudio()
         }else{
@@ -315,8 +295,7 @@ class PlayerViewController: UIViewController{
     }
     
     func pauseAudioPlayer(){
-        audioPlayer.pause()
-        
+        enginePlayer.pause()
     }
     
     
@@ -336,12 +315,13 @@ class PlayerViewController: UIViewController{
     
     
     @objc func update(_ timer: Timer){
-        if !audioPlayer.isPlaying{
+        if !enginePlayer.isPlaying{
             return
         }
-        let time = calculateTimeFromNSTimeInterval(audioPlayer.currentTime)
+        
+        let time = calculateTimeFrom(enginePlayer.current)
         progressTimerLabel.text  = "\(time.minute):\(time.second)"
-        playerProgressSlider.value = CFloat(audioPlayer.currentTime)
+        playerProgressSlider.value = Float(enginePlayer.current)
         UserSettings.shared.playerProgress = playerProgressSlider.value
         
     }
@@ -351,32 +331,27 @@ class PlayerViewController: UIViewController{
     
     
     func retrievePlayerProgressSliderValue(){
-        guard audioPlayer != nil else {
-            return
-        }
+        
         let playerProgressSliderValue = UserSettings.shared.playerProgress
         if playerProgressSliderValue == 0 {
             playerProgressSlider.value = 0.0
             audioPlayer.currentTime = 0.0
             progressTimerLabel.text = "00:00:00"
         }else{
-            guard audioPlayer != nil else{
-                alertSongExsit()
-                return
-            }
+            
             playerProgressSlider.value  = playerProgressSliderValue
             audioPlayer.currentTime = TimeInterval(playerProgressSliderValue)
             
-            let time = calculateTimeFromNSTimeInterval(audioPlayer.currentTime)
+            let time = calculateTimeFrom(enginePlayer.current)
             progressTimerLabel.text  = "\(time.minute):\(time.second)"
-            playerProgressSlider.value = CFloat(audioPlayer.currentTime)
+            playerProgressSlider.value = Float(enginePlayer.current)
         }
     }
 
     
     
     //This returns song length
-    func calculateTimeFromNSTimeInterval(_ duration:TimeInterval) ->(minute:String, second:String){
+    func calculateTimeFrom(_ duration: TimeInterval) ->(minute:String, second:String){
        // let hour_   = abs(Int(duration)/3600)
         let minute_ = abs(Int((duration/60).truncatingRemainder(dividingBy: 60)))
         let second_ = abs(Int(duration.truncatingRemainder(dividingBy: 60)))
@@ -396,7 +371,7 @@ class PlayerViewController: UIViewController{
     
     
     func calculateSongLength(){
-        let time = calculateTimeFromNSTimeInterval(audioLength)
+        let time = calculateTimeFrom(audioLength)
         totalLengthOfAudio = "\(time.minute):\(time.second)"
     }
     
@@ -516,19 +491,16 @@ class PlayerViewController: UIViewController{
     //MARK:- Target Action
     
     @IBAction func play(_ sender : AnyObject) {
-        guard audioPlayer != nil else{
-            alertSongExsit()
-            return
-        }
+        
         if shuffleState == true {
             shuffleCluster.removeAll()
         }
         let play = UIImage(named: "play")
         let pause = UIImage(named: "pause")
-        if audioPlayer.isPlaying{
+        if enginePlayer.isPlaying{
             pauseAudioPlayer()
-            if audioPlayer.isPlaying {
-                playButton.setImage( pause, for: UIControl.State())
+            if enginePlayer.isPlaying{
+                playButton.setImage(pause, for: UIControl.State())
             }
             else{
                 playButton.setImage(play , for: UIControl.State())
@@ -536,7 +508,7 @@ class PlayerViewController: UIViewController{
             
         }else{
             playAudio()
-            if audioPlayer.isPlaying {
+            if enginePlayer.isPlaying{
                 playButton.setImage( pause, for: UIControl.State())
             }
             else{
@@ -561,11 +533,7 @@ class PlayerViewController: UIViewController{
     
     
     @IBAction func changeAudioLocationSlider(_ sender : UISlider) {
-        guard audioPlayer != nil else{
-            alertSongExsit()
-            return
-        }
-        audioPlayer.pause()
+        enginePlayer.pause()
         audioPlayer.currentTime = TimeInterval(sender.value)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.audioPlayer.play()
@@ -680,7 +648,7 @@ extension PlayerViewController: UITableViewDelegate{
         let pause = UIImage(named: "pause")
         
         
-        if audioPlayer.isPlaying{
+        if enginePlayer.isPlaying{
             playButton.setImage( pause, for: UIControl.State())
         }
         else{
@@ -816,4 +784,31 @@ extension PlayerViewController: AVAudioPlayerDelegate{
         }
     }
 
+}
+
+
+
+
+
+extension AVAudioFile{
+    
+    var duration: TimeInterval{
+        let sampleRateSong = Double(processingFormat.sampleRate)
+        let lengthSongSeconds = Double(length) / sampleRateSong
+        return lengthSongSeconds
+    }
+    
+}
+
+
+
+
+extension AVAudioPlayerNode{
+    
+    var current: TimeInterval{
+        if let nodeTime = lastRenderTime,let playerTime = playerTime(forNodeTime: nodeTime) {
+            return Double(playerTime.sampleTime) / playerTime.sampleRate
+        }
+        return 0
+    }
 }
