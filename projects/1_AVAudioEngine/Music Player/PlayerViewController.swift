@@ -75,7 +75,7 @@ class PlayerViewController: UIViewController{
     
     
     @IBOutlet weak var stateTip: UILabel!
-    
+    var playEnd = false
     //MARK:- Lockscreen Media Control
     
     // This shows media info on lock screen - used currently and perform controls
@@ -660,19 +660,16 @@ extension PlayerViewController: UITableViewDataSource{
 extension PlayerViewController{
 
     func audioPlayerDidFinishPlaying(){
-
             switch (shuffleState, repeatState){
             case (false, false):
                 // do nothing
                 playButton.isSelected = false
-                return
             case (false, true):
                 //repeat same song
                 prepareAudio()
                 playAudio()
             case (true, false):
                 //shuffle songs but do not repeat at the end
-                //Shuffle Logic : Create an array and put current song into the array then when next song come randomly choose song from available song and check against the array it is in the array try until you find one if the array and number of songs are same then stop playing as all songs are already played.
                 shuffleCluster.insert(currentAudioIndex)
                 if shuffleCluster.count >= audioList.count {
                     playButton.isSelected = false
@@ -718,11 +715,15 @@ extension AVAudioFile{
 
 
 extension PlayerViewController: StreamingDelegate{
-    func streamer(_ streamer: Streaming, updatedDuration currentTime: TimeInterval) {
+    
+    
+    func streamer(_ streamer: Streaming, updatedCurrentTime currentTime: TimeInterval) {
         guard let lasting = streamer.duration else {
             return
         }
-        if abs(lasting - currentTime) < 0.3{
+        
+        if abs(lasting - currentTime) < 0.3, playEnd == false{
+            playEnd = true
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
                 self.audioPlayerDidFinishPlaying()
             }
