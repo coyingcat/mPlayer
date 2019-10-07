@@ -105,7 +105,6 @@ class PlayerViewController: UIViewController{
     }
     
     override var prefersStatusBarHidden : Bool {
-        
         if isTableViewOnscreen{
             return true
         }else{
@@ -113,22 +112,19 @@ class PlayerViewController: UIViewController{
         }
     }
     
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         showState(UserSettings.shared.isInShuffle, UserSettings.shared.isInRepeat)
         //   background
         backgroundImageView.image = UIImage(named: "background\(selectedBackground)")
         let playImg = UIImage(named: "play")
-        // to pause
+        // is playing, to pause
         let pauseImg = UIImage(named: "pause")
         playButton.setImage(playImg, for: UIControl.State.normal)
         playButton.setImage(pauseImg, for: UIControl.State.selected)
         
         // this sets last listened trach number as current
-        retrieveSavedTrackNumber()
+        currentAudioIndex = UserSettings.shared.currentAudioIndex
         prepareAudio()
         updateLabels()
         assingSliderUI()
@@ -144,20 +140,8 @@ class PlayerViewController: UIViewController{
 
     
     func setRepeatAndShuffle(){
-        shuffleState = UserSettings.shared.isInShuffle
-        repeatState = UserSettings.shared.isInRepeat
-        if shuffleState == true {
-            shuffleButton.isSelected = true
-        } else {
-            shuffleButton.isSelected = false
-        }
-        
-        if repeatState == true {
-            repeatButton.isSelected = true
-        }else{
-            repeatButton.isSelected = false
-        }
-    
+        shuffleButton.isSelected = UserSettings.shared.isInShuffle
+        repeatButton.isSelected = UserSettings.shared.isInRepeat
     }
     
     
@@ -186,14 +170,7 @@ class PlayerViewController: UIViewController{
         else{
             alertSongExsit()
         }
-        print("\(String(describing: currentAudioPath))")
     }
-    
-    
-    func saveCurrentTrackNumber(){
-        UserSettings.shared.currentAudioIndex = currentAudioIndex
-    }
-    
     
 
     func alertSongExsit(){
@@ -203,13 +180,6 @@ class PlayerViewController: UIViewController{
         present(alert, animated: true, completion: {})
     }
     
-    
-    
-    func retrieveSavedTrackNumber(){
-        currentAudioIndex = UserSettings.shared.currentAudioIndex
-    }
-
-
     
     // Prepare audio for playing
     func prepareAudio(){
@@ -246,7 +216,9 @@ class PlayerViewController: UIViewController{
         enginePlayer.play()
         startTimer()
         updateLabels()
-        saveCurrentTrackNumber()
+        
+        UserSettings.shared.currentAudioIndex = currentAudioIndex
+        
         showMediaInfo()
     }
     
@@ -610,26 +582,9 @@ extension PlayerViewController: UITableViewDelegate{
         else{
             listButton.setImage(removeList , for: UIControl.State())
         }
-        
-        
-        let play = UIImage(named: "play")
-        let pause = UIImage(named: "pause")
-        
-        
-        if enginePlayer.isPlaying{
-            playButton.setImage( pause, for: UIControl.State())
-        }
-        else{
-            playButton.setImage(play , for: UIControl.State())
-        }
-        
-        
+        playButton.isSelected = enginePlayer.isPlaying
         blurView.isHidden = true
-        
     }
-    
-    
-    
     
 }
 
@@ -715,7 +670,7 @@ extension PlayerViewController{
             switch (shuffleState, repeatState){
             case (false, false):
                 // do nothing
-                playButton.setImage( UIImage(named: "play"), for: UIControl.State())
+                playButton.isSelected = false
                 return
             case (false, true):
                 //repeat same song
@@ -726,8 +681,7 @@ extension PlayerViewController{
                 //Shuffle Logic : Create an array and put current song into the array then when next song come randomly choose song from available song and check against the array it is in the array try until you find one if the array and number of songs are same then stop playing as all songs are already played.
                 shuffleCluster.insert(currentAudioIndex)
                 if shuffleCluster.count >= audioList.count {
-                    playButton.setImage( UIImage(named: "play"), for: UIControl.State())
-                    // 播放一遍完了
+                    playButton.isSelected = false
                     return
                 }
                 let available = Set<Int>(0...(audioList.count-1))
