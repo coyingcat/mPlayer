@@ -299,6 +299,11 @@ class PlayerViewController: UIViewController{
     
     func retrievePlayerProgressSliderValue(){
         
+        // 最好关一下计时器，
+        // 更新明显异常
+        // touch began ， end
+        
+        
         let playerProgressSliderValue = UserSettings.shared.playerProgress
         if playerProgressSliderValue == 0 {
             playerProgressSlider.value = 0.0
@@ -442,6 +447,9 @@ class PlayerViewController: UIViewController{
         let minImage = UIImage(named: "slider-track-fill")
         let maxImage = UIImage(named: "slider-track")
         let thumb = UIImage(named: "thumb")
+        
+        
+        // 因为我只对结尾的那个值，感兴趣
         playerProgressSlider.isContinuous = false
         playerProgressSlider.setMinimumTrackImage(minImage, for: UIControl.State())
         playerProgressSlider.setMaximumTrackImage(maxImage, for: UIControl.State())
