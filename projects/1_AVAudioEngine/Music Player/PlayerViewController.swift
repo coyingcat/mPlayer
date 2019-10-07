@@ -85,9 +85,9 @@ class PlayerViewController: UIViewController{
         if event!.type == UIEvent.EventType.remoteControl{
             switch event!.subtype{
             case UIEventSubtype.remoteControlPlay:
-                play(self)
+                play(playButton)
             case UIEventSubtype.remoteControlPause:
-                play(self)
+                play(playButton)
             case UIEventSubtype.remoteControlNextTrack:
                 next(self)
             case UIEventSubtype.remoteControlPreviousTrack:
@@ -121,8 +121,11 @@ class PlayerViewController: UIViewController{
         showState(UserSettings.shared.isInShuffle, UserSettings.shared.isInRepeat)
         //   background
         backgroundImageView.image = UIImage(named: "background\(selectedBackground)")
-        
-        
+        let playImg = UIImage(named: "play")
+        // to pause
+        let pauseImg = UIImage(named: "pause")
+        playButton.setImage(playImg, for: UIControl.State.normal)
+        playButton.setImage(pauseImg, for: UIControl.State.selected)
         
         // this sets last listened trach number as current
         retrieveSavedTrackNumber()
@@ -474,22 +477,18 @@ class PlayerViewController: UIViewController{
     
     //MARK:- Target Action
     
-    @IBAction func play(_ sender : AnyObject) {
-        
+    
+    @IBAction func play(_ sender: UIButton) {
+    
+        sender.isSelected.toggle()
         if shuffleState == true {
             shuffleCluster.removeAll()
         }
-        let play = UIImage(named: "play")
-        let pause = UIImage(named: "pause")
+        
         if enginePlayer.isPlaying{
             pauseAudioPlayer()
-            
-            playButton.setImage(pause, for: UIControl.State())
-
         }else{
             playAudio()
-            
-            playButton.setImage(play , for: UIControl.State())
         }
     }
     
@@ -508,16 +507,13 @@ class PlayerViewController: UIViewController{
     
     
     @IBAction func changeAudioLocationSlider(_ sender : UISlider) {
-        enginePlayer.pause()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            try? self.enginePlayer.seek(to:  TimeInterval(sender.value))
-        }
+       
+        try? enginePlayer.seek(to: TimeInterval(sender.value))
     }
     
     
     @IBAction func userTapped(_ sender : UITapGestureRecognizer) {
-        
-        play(self)
+        play(playButton)
     }
     
     @IBAction func userSwipeLeft(_ sender : UISwipeGestureRecognizer) {
