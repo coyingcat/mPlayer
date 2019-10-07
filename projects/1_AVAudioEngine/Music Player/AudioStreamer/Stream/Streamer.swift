@@ -62,9 +62,7 @@ open class Streamer: Streaming {
                         }
                     }
                     
-                }catch let error{
-                    delegate?.streamer(self, failedDownloadWithError: error, forURL: url)
-                }
+                }catch{ }
                 
                 
                 handleDurationUpdate()
@@ -348,13 +346,6 @@ open class Streamer: Streaming {
 
     // MARK: - Notifying The Delegate
 
-    func notifyDownloadProgress(_ progress: Float) {
-        guard let url = url else {
-            return
-        }
-
-        delegate?.streamer(self, updatedDownloadProgress: progress, forURL: url)
-    }
 
     func notifyDurationUpdate(_ duration: TimeInterval) {
         guard let _ = url else {
@@ -376,3 +367,9 @@ open class Streamer: Streaming {
         delegate?.streamer(self, updatedCurrentTime: currentTime)
     }
 }
+
+
+
+
+
+

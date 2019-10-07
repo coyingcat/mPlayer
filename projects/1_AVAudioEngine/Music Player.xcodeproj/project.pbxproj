@@ -36,10 +36,8 @@
 		2647DF7F23493489003DE889 /* Billie Jean.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2647DF7C23493489003DE889 /* Billie Jean.mp3 */; };
 		2647DF8023493489003DE889 /* Baby Be Mine.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2647DF7D23493489003DE889 /* Baby Be Mine.mp3 */; };
 		269E99722349CF5400FC044C /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269E99712349CF5400FC044C /* UserSettings.swift */; };
-		26C24A35234B5D3E00E445C6 /* TimeInterval+MMSS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C24A20234B5D3E00E445C6 /* TimeInterval+MMSS.swift */; };
 		26C24A37234B5D3E00E445C6 /* StreamingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C24A23234B5D3E00E445C6 /* StreamingDelegate.swift */; };
 		26C24A38234B5D3E00E445C6 /* Streaming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C24A24234B5D3E00E445C6 /* Streaming.swift */; };
-		26C24A39234B5D3E00E445C6 /* Streamer+DownloadableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C24A25234B5D3E00E445C6 /* Streamer+DownloadableDelegate.swift */; };
 		26C24A3A234B5D3E00E445C6 /* StreamingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C24A26234B5D3E00E445C6 /* StreamingState.swift */; };
 		26C24A3B234B5D3E00E445C6 /* Streamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C24A27234B5D3E00E445C6 /* Streamer.swift */; };
 		26C24A3C234B5D3E00E445C6 /* Parser+PropertyListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C24A29234B5D3E00E445C6 /* Parser+PropertyListener.swift */; };
@@ -99,10 +97,8 @@
 		2647DF7C23493489003DE889 /* Billie Jean.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Billie Jean.mp3"; sourceTree = "<group>"; };
 		2647DF7D23493489003DE889 /* Baby Be Mine.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Baby Be Mine.mp3"; sourceTree = "<group>"; };
 		269E99712349CF5400FC044C /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
-		26C24A20234B5D3E00E445C6 /* TimeInterval+MMSS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval+MMSS.swift"; sourceTree = "<group>"; };
 		26C24A23234B5D3E00E445C6 /* StreamingDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamingDelegate.swift; sourceTree = "<group>"; };
 		26C24A24234B5D3E00E445C6 /* Streaming.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Streaming.swift; sourceTree = "<group>"; };
-		26C24A25234B5D3E00E445C6 /* Streamer+DownloadableDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Streamer+DownloadableDelegate.swift"; sourceTree = "<group>"; };
 		26C24A26234B5D3E00E445C6 /* StreamingState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamingState.swift; sourceTree = "<group>"; };
 		26C24A27234B5D3E00E445C6 /* Streamer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Streamer.swift; sourceTree = "<group>"; };
 		26C24A29234B5D3E00E445C6 /* Parser+PropertyListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Parser+PropertyListener.swift"; sourceTree = "<group>"; };
@@ -218,7 +214,6 @@
 		26C24A1E234B5D3E00E445C6 /* AudioStreamer */ = {
 			isa = PBXGroup;
 			children = (
-				26C24A1F234B5D3E00E445C6 /* UI */,
 				26C24A22234B5D3E00E445C6 /* Stream */,
 				26C24A28234B5D3E00E445C6 /* Parse */,
 				26C24A2E234B5D3E00E445C6 /* Read */,
@@ -226,20 +221,11 @@
 			path = AudioStreamer;
 			sourceTree = "<group>";
 		};
-		26C24A1F234B5D3E00E445C6 /* UI */ = {
-			isa = PBXGroup;
-			children = (
-				26C24A20234B5D3E00E445C6 /* TimeInterval+MMSS.swift */,
-			);
-			path = UI;
-			sourceTree = "<group>";
-		};
 		26C24A22234B5D3E00E445C6 /* Stream */ = {
 			isa = PBXGroup;
 			children = (
 				26C24A23234B5D3E00E445C6 /* StreamingDelegate.swift */,
 				26C24A24234B5D3E00E445C6 /* Streaming.swift */,
-				26C24A25234B5D3E00E445C6 /* Streamer+DownloadableDelegate.swift */,
 				26C24A26234B5D3E00E445C6 /* StreamingState.swift */,
 				26C24A27234B5D3E00E445C6 /* Streamer.swift */,
 			);
@@ -466,7 +452,6 @@
 				26C24A38234B5D3E00E445C6 /* Streaming.swift in Sources */,
 				26C24A3D234B5D3E00E445C6 /* ParserError.swift in Sources */,
 				26C24A3E234B5D3E00E445C6 /* Parser+Packets.swift in Sources */,
-				26C24A35234B5D3E00E445C6 /* TimeInterval+MMSS.swift in Sources */,
 				26C24A3A234B5D3E00E445C6 /* StreamingState.swift in Sources */,
 				26C24A41234B5D3E00E445C6 /* Reader.swift in Sources */,
 				2612FC1622E7396700B0B074 /* Extern.swift in Sources */,
@@ -477,7 +462,6 @@
 				2612FC1422E7375700B0B074 /* Const.swift in Sources */,
 				2612FC1222E734C500B0B074 /* Util.swift in Sources */,
 				26C24A3C234B5D3E00E445C6 /* Parser+PropertyListener.swift in Sources */,
-				26C24A39234B5D3E00E445C6 /* Streamer+DownloadableDelegate.swift in Sources */,
 				D3D2E95319A36A0000DEF125 /* AppDelegate.swift in Sources */,
 				26C24A43234B5D3E00E445C6 /* ReaderError.swift in Sources */,
 				26C24A40234B5D3E00E445C6 /* Parser.swift in Sources */,

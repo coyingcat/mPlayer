@@ -9,7 +9,11 @@ class PlayerViewController: UIViewController{
     
     //Choose background here. Between 1 - 7
     let selectedBackground = 1
-    let enginePlayer = Streamer()
+    lazy var enginePlayer = { () -> Streamer in
+        let player = Streamer()
+        player.delegate = self
+        return player
+    }()
     
     var currentAudio = ""
     var currentAudioPath:URL!
@@ -204,7 +208,6 @@ class PlayerViewController: UIViewController{
         showTotalSongLength()
         updateLabels()
         progressTimerLabel.text = "00:00"
-        
         
     }
     
@@ -649,24 +652,15 @@ extension PlayerViewController: UITableViewDataSource{
         cell.backgroundColor = UIColor.clear
     }
 
-
-
-
 }
-
-
-
 
 
 
 
 extension PlayerViewController{
 
+    func audioPlayerDidFinishPlaying(){
 
-    // MARK:- AVAudioPlayer Delegate's Callback method
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool){
-        if flag == true {
-            
             switch (shuffleState, repeatState){
             case (false, false):
                 // do nothing
@@ -702,8 +696,7 @@ extension PlayerViewController{
                 playAudio()
                 
             }
-            
-        }
+        
     }
 
 }
@@ -724,3 +717,15 @@ extension AVAudioFile{
 
 
 
+extension PlayerViewController: StreamingDelegate{
+    func streamer(_ streamer: Streaming, updatedDuration currentTime: TimeInterval) {
+        guard let lasting = streamer.duration else {
+            return
+        }
+        if abs(lasting - currentTime) < 0.3{
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
+                self.audioPlayerDidFinishPlaying()
+            }
+        }
+    }
+}

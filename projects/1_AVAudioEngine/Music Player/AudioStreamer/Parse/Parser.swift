@@ -5,10 +5,7 @@ import os.log
 
 /// The `Parser` is a concrete implementation of the `Parsing` protocol used to convert binary data into audio packet data. This class uses the Audio File Stream Services to progressively parse the properties and packets of the incoming audio data.
 public class Parser: Parsing {
-    static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Parser")
-    static let loggerPacketCallback = OSLog(subsystem: "com.fastlearner.streamer", category: "Parser.Packets")
-    static let loggerPropertyListenerCallback = OSLog(subsystem: "com.fastlearner.streamer", category: "Parser.PropertyListener")
-    
+
     // MARK: - Parsing props
     
     public internal(set) var dataFormat: AVAudioFormat?
@@ -47,14 +44,14 @@ public class Parser: Parsing {
     // MARK: - Methods
     
     public func parse(data: Data) throws {
-        
-        
         let streamID = self.streamID!
         let count = data.count
-        _ = try data.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) in
-            let result = AudioFileStreamParseBytes(streamID, UInt32(count), bytes, [])
+        
+        try data.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) in
+            let unsafeBufferPointer = bytes.bindMemory(to: UInt8.self)
+            let unsafePointer = unsafeBufferPointer.baseAddress!
+            let result = AudioFileStreamParseBytes(streamID, UInt32(count), unsafePointer, [])
             guard result == noErr else {
-                
                 throw ParserError.failedToParseBytes(result)
             }
         }
