@@ -234,9 +234,8 @@ class PlayerViewController: UIViewController{
             return
         }
         prepareAudio()
-        if enginePlayer.isPlaying{
-            playAudio()
-        }
+        playAudio()
+        
     }
     
     

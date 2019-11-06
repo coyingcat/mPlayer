@@ -1,7 +1,7 @@
 
 import Foundation
 import AVFoundation
-import os.log
+
 
 func ParserPacketCallback(_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ packetCount: UInt32, _ data: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>) {
     let parser = Unmanaged<Parser>.fromOpaque(context).takeUnretainedValue()

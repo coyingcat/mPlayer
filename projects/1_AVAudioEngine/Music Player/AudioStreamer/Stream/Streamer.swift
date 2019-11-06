@@ -1,12 +1,11 @@
 
 import AVFoundation
 import Foundation
-import os.log
+
 
 /// The `Streamer` is a concrete implementation of the `Streaming` protocol and is intended to provide a high-level, extendable class for streaming an audio file living at a URL on the internet. Subclasses can override the `attachNodes` and `connectNodes` methods to insert custom effects.
 open class Streamer: Streaming {
-    static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
-
+  
     // MARK: - Properties (Streaming)
     
     public var currentTime: TimeInterval? {
@@ -66,13 +65,6 @@ open class Streamer: Streaming {
                 
                 
                 handleDurationUpdate()
-            
-                //TODO: - url
-                /*
-                downloader.url = url
-                //  在这里开始
-                downloader.start()
-                */
             }
         }
     }
