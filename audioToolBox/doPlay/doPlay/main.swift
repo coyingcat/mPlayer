@@ -99,19 +99,19 @@ func outputCallback(userData: UnsafeMutableRawPointer?, queue: OpaquePointer, bu
     let player = user.assumingMemoryBound(to: Player.self)
         
         
-        if player.pointee.isDone { return }
+    if player.pointee.isDone { return }
         
         // read audio data from file into supplied buffer
-        var numBytes: UInt32 = bufferToFill.pointee.mAudioDataBytesCapacity
-        var nPackets = player.pointee.numPacketsToRead
+    var numBytes: UInt32 = bufferToFill.pointee.mAudioDataBytesCapacity
+    var nPackets = player.pointee.numPacketsToRead
         
-        Utility.check(error: AudioFileReadPacketData(player.pointee.playbackFile!,              // AudioFileID
-                                                     false,                                     // use cache?
-                                                     &numBytes,                                 // initially - buffer capacity, after - bytes actually read
-                                                     player.pointee.packetDescs,                // pointer to an array of PacketDescriptors
-                                                     player.pointee.packetPosition,             // index of first packet to be read
-                                                     &nPackets,                                 // number of packets
-                                                     bufferToFill.pointee.mAudioData),          // output buffer
+    Utility.check(error: AudioFileReadPacketData(player.pointee.playbackFile!,              // AudioFileID
+                                                false,                                     // use cache?
+                                                &numBytes,                                 // initially - buffer capacity, after - bytes actually read
+                                                player.pointee.packetDescs,                // pointer to an array of PacketDescriptors
+                                                player.pointee.packetPosition,             // index of first packet to be read
+                                                &nPackets,                                 // number of packets
+                                                bufferToFill.pointee.mAudioData),          // output buffer
                       operation: "AudioFileReadPacketData failed")
 
         // enqueue buffer into the Audio Queue
@@ -142,7 +142,7 @@ func outputCallback(userData: UnsafeMutableRawPointer?, queue: OpaquePointer, bu
 
 var kPlaybackFileLocation = CFStringCreateWithCString(kCFAllocatorDefault, "/Users/jzd/Downloads/essays_francis_bacon_cv3_librivox_64kb_mp3/essays_07_bacon_64kb.mp3", CFStringBuiltInEncodings.UTF8.rawValue)
 
-kPlaybackFileLocation = CFStringCreateWithCString(kCFAllocatorDefault, "/Users/jzd/Music/dev_src/up.m4a", CFStringBuiltInEncodings.UTF8.rawValue)
+// kPlaybackFileLocation = CFStringCreateWithCString(kCFAllocatorDefault, "/Users/jzd/Music/dev_src/up.m4a", CFStringBuiltInEncodings.UTF8.rawValue)
 
 
 let kNumberPlaybackBuffers = 3
